@@ -2,7 +2,6 @@ services:
   consumer:
     build:
       context: ./consumer
-      dockerfile: Dockerfile
     volumes:
       - ./consumer:/app
     ports:
@@ -14,7 +13,6 @@ services:
   producer:
     build:
       context: ./producer
-      dockerfile: Dockerfile
     volumes:
       - ./producer:/app
     ports:
@@ -26,7 +24,6 @@ services:
   rabbitmq:
     build:
       context: ./rabbitmq
-      dockerfile: Dockerfile
     ports:
       - 5672:5672
     healthcheck:
