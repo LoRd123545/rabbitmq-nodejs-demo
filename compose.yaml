@@ -1,0 +1,35 @@
+services:
+  consumer:
+    build:
+      context: ./consumer
+      dockerfile: Dockerfile
+    volumes:
+      - ./consumer:/app
+    ports:
+      - 3000:3000
+    depends_on:
+      rabbitmq:
+        condition: service_healthy
+        restart: true
+  producer:
+    build:
+      context: ./producer
+      dockerfile: Dockerfile
+    volumes:
+      - ./producer:/app
+    ports:
+      - 4000:3000
+    depends_on:
+      rabbitmq:
+        condition: service_healthy
+        restart: true
+  rabbitmq:
+    build:
+      context: ./rabbitmq
+      dockerfile: Dockerfile
+    ports:
+      - 5672:5672
+    healthcheck:
+      test: timeout 10s bash -c ':> /dev/tcp/localhost/5672'
+      retries: 5
+      start_period: 10s
